@@ -69,3 +69,39 @@ C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\Napr
 C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.pdb
 C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.genruntimeconfig.cache
 C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\ref\BurgerHouse.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\BurgerHouse.exe
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\BurgerHouse.deps.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\BurgerHouse.runtimeconfig.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\BurgerHouse.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\BurgerHouse.pdb
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.csproj.AssemblyReference.cache
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.AssemblyInfoInputs.cache
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.AssemblyInfo.cs
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.csproj.CoreCompileInputs.cache
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.sourcelink.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets\msbuild.BurgerHouse.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.BurgerHouse.props
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.BurgerHouse.props
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.BurgerHouse.props
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\scopedcss\bundle\BurgerHouse.styles.css
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHo.782DDC53.Up2Date
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\refint\BurgerHouse.dll
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.pdb
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.genruntimeconfig.cache
+C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\ref\BurgerHouse.dll
