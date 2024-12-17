@@ -154,8 +154,4 @@ public class MenuItemController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
-
-    
-
 }
