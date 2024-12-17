@@ -8,11 +8,13 @@ public class MenuItemController : ControllerBase
     {
         _redis = redis;
     }
-    [HttpPost("AddBurger")]
-    public async Task<ActionResult> AddBurger([FromBody] MenuItem menuItem)
+    [HttpPost("AddItem/{type}")]
+    public async Task<ActionResult> AddItem([FromBody] MenuItem menuItem , string type)
     {
         try
         {
+            if (type != "burger" && type != "fries" && type != "drinks")
+                return BadRequest("Type must be burger|fries|drinks");
             if(string.IsNullOrEmpty(menuItem.Name))
                 return BadRequest("Item has to have a name.");
             if(string.IsNullOrEmpty(menuItem.Description))
@@ -20,7 +22,7 @@ public class MenuItemController : ControllerBase
             if(menuItem.Price <= 0)
                 return BadRequest("Item price needs to be greater than zero.");
             var db = _redis.GetDatabase();
-            string redisKey = $"menu:burger:{menuItem.Name.ToLower().Replace(" " , "")}";
+            string redisKey = $"menu:{type}:{menuItem.Name.ToLower().Replace(" " , "")}";
             if(await db.KeyExistsAsync(redisKey))
                 return BadRequest($"Item with name:{menuItem.Name} already exists.");
             await db.HashSetAsync(redisKey , 
@@ -37,46 +39,17 @@ public class MenuItemController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpPost("AddFries")]
-    public async Task<ActionResult> AddFries([FromBody] MenuItem menuItem)
+    [HttpDelete("DeleteItem/{key}")]
+    public async Task<ActionResult> DeleteItem(string key)
     {
         try
         {
-            if(string.IsNullOrEmpty(menuItem.Name))
-                return BadRequest("Item has to have a name.");
-            if(string.IsNullOrEmpty(menuItem.Description))
-                return BadRequest("Item has to have a description.");
-            if(menuItem.Price <= 0)
-                return BadRequest("Item price needs to be greater than zero.");
-            var db = _redis.GetDatabase();
-            string redisKey = $"menu:fries:{menuItem.Name.ToLower().Replace(" " , "")}";
-            if(await db.KeyExistsAsync(redisKey))
-                return BadRequest($"Item with name:{menuItem.Name} already exists.");
-            await db.HashSetAsync(redisKey , 
-            [
-                new HashEntry("name", menuItem.Name),
-                new HashEntry("price",menuItem.Price),
-                new HashEntry("description", menuItem.Description)
-            ]);
-            await db.SetAddAsync("menu:items" , redisKey);
-            return Ok($"Item is succesfully added to menu , redisKey={redisKey}.");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-
-    [HttpDelete("DeleteItem")]
-    public async Task<ActionResult> DeleteItem(string name)
-    {
-        try
-        {
-            if(string.IsNullOrEmpty(name))
+            if(string.IsNullOrEmpty(key))
                 return BadRequest("Name of an item is needed.");
+            if(!key.Contains("menu:") || key.Contains("menu:items"))
+                return BadRequest("Key is not part of menu items");
             var db = _redis.GetDatabase();
-            var redisKey = $"menu:{name.ToLower().Replace(" " , "")}";
+            var redisKey = key;
             if(!await db.KeyExistsAsync(redisKey))
                 return NotFound("Item does not exist");
             if(await db.SetContainsAsync("menu:items" , redisKey))
@@ -89,15 +62,16 @@ public class MenuItemController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpGet("ReadItem")]
-    public async Task<ActionResult> ReadItem(string name)
+    [HttpGet("ReadItem/{key}")]
+    public async Task<ActionResult> ReadItem(string key)
     {
         try
-        {
-            if(string.IsNullOrEmpty(name))
+        {   
+            
+            if(string.IsNullOrEmpty(key))
                 return BadRequest("Name of an item is needed.");
             var db = _redis.GetDatabase();
-            var redisKey = $"menu:{name.ToLower().Replace(" " , "")}";
+            var redisKey = key;
             if(!await db.KeyExistsAsync(redisKey))
                 return NotFound("Item does not exist");
             HashEntry[] fields = await db.HashGetAllAsync(redisKey);
@@ -130,44 +104,32 @@ public class MenuItemController : ControllerBase
         }
     }
 
-    [HttpGet("ReadAllBurgers")]
-    public async Task<ActionResult> ReadAllBurgers()
+    [HttpGet("ReadAllSpecific/{type}")]
+    public async Task<ActionResult> ReadAllSpecific(string type)
     {
         try
-        {
+        {   
+            if (type != "burger" && type != "fries" && type != "drinks")
+                return BadRequest("Type must be burger|fries|drinks");
             var db = _redis.GetDatabase();
             if(!await db.KeyExistsAsync("menu:items"))
                 return NotFound("Items do not exist.");
             RedisValue[] members = await db.SetMembersAsync("menu:items");
-            var items = members.Select(member => member.ToString()).Where(member => member.StartsWith("menu:burger:")).ToList();
-            return Ok(items);
+            var items = members.Select(member => member.ToString()).Where(member => member.StartsWith($"menu:{type}:")).ToList();
+            var burgerNames = items.Select(async key => new { Key = key, Name = (await db.HashGetAsync(key, "name")).ToString() }).ToList();
+            var names = await Task.WhenAll(burgerNames);
+            return Ok(names);
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
-     [HttpGet("ReadAllFries")]
-    public async Task<ActionResult> ReadAllFries()
-    {
-        try
-        {
-            var db = _redis.GetDatabase();
-            if(!await db.KeyExistsAsync("menu:items"))
-                return NotFound("Items do not exist.");
-            RedisValue[] members = await db.SetMembersAsync("menu:items");
-            var items = members.Select(member => member.ToString()).Where(member => member.StartsWith("menu:fries:")).ToList();
-            return Ok(items);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
+    
 
 
-    [HttpPut("UpdateItem")]
-    public async Task<ActionResult> UpdateItem([FromBody] MenuItem menuItem )
+    [HttpPut("UpdateItem/{key}")]
+    public async Task<ActionResult> UpdateItem([FromBody] MenuItem menuItem , string key)
     {
         try
         {
@@ -178,7 +140,7 @@ public class MenuItemController : ControllerBase
             if(menuItem.Price <= 0)
                 return BadRequest("Item price needs to be greater than zero.");
             var db = _redis.GetDatabase();
-            var redisKey = $"menu:{menuItem.Name.ToLower().Replace(" " , "")}";
+            var redisKey = key;
             if(!await db.KeyExistsAsync(redisKey))
                 return NotFound("Items do not exist.");
             await db.HashSetAsync(redisKey , [
@@ -192,4 +154,8 @@ public class MenuItemController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+
+    
+
 }

@@ -7,7 +7,7 @@ public class QueueUserController : ControllerBase
     {
         _redis = redis;
     }
-    [HttpPost("AddUser2Queue")]
+    [HttpPost("AddUser2Queue/{userKey}/{orderKey}")]
     public async Task<ActionResult> AddUser2Queue(int userKey , int orderKey)
     {
         try
