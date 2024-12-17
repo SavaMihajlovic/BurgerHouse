@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Navbar from '../components/Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
 import homeImg from '../img/home.png'
 import burger1 from '../img/burger1.png'
 import Menu from '../components/Navbar/Menu/Menu';
@@ -7,10 +7,10 @@ import Footer from '../components/Navbar/Footer/Footer';
 import LoginForm from '../components/PrijavaForm/PrijavaForm';
 
 
-export const Home = () => {
+export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -20,10 +20,12 @@ export const Home = () => {
     setMenuOpen(false);
   };
 
-  return (
-    <div className={loginDialogOpen ? 'overlay' : ''}>
-        <Navbar setLoginDialogOpen={setLoginDialogOpen}/>
+  const handleOrderClick = () => {
+    setLoginDialogOpen(true);
+  };
 
+  return (
+    <>
         {loginDialogOpen && (
             <div className='prijava-container'>
                 <LoginForm loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>
@@ -55,8 +57,8 @@ export const Home = () => {
             <div className="order-text">
             <h2>Želite da probate našu ukusnu hranu?</h2>
             <h2>Ne čekajte! </h2>
-            <a href="#home" className="button">
-                Poruči odmah
+            <a onClick={handleOrderClick} className="button" style={{cursor:'pointer'}}>
+                Naruči odmah
             </a>
             </div>
             <div className="order-img">
@@ -89,6 +91,6 @@ export const Home = () => {
         </section>
         <Footer/>
         </div> 
-    </div>
+    </>
   )
 }

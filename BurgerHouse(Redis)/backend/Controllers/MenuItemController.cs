@@ -130,7 +130,7 @@ public class MenuItemController : ControllerBase
         }
     }
 
-     [HttpGet("ReadAllBurgers")]
+    [HttpGet("ReadAllBurgers")]
     public async Task<ActionResult> ReadAllBurgers()
     {
         try

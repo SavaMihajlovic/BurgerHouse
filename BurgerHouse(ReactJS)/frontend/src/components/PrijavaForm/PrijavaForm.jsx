@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Button, Stack, Box, Text, Link} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -17,6 +19,8 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
       return;
     }
     setError('');
+    navigate('/kupac');
+    setLoginDialogOpen(false);
   };
 
   const handleRegisterSubmit = (e) => {

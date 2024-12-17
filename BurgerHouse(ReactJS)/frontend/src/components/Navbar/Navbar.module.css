@@ -2,3 +2,7 @@
     cursor: pointer;
 }
 
+.activeLink {
+    color: orangered; 
+    font-weight: bold; 
+  }

@@ -176,6 +176,7 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
   justify-content: center;
   background: #ead1a8;
   padding: 20px;
@@ -217,6 +218,11 @@ section {
   top: 0%;
   font-size: 20px;
   padding: 7px 10px;
+}
+
+.box:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
 }
 
 .order {
