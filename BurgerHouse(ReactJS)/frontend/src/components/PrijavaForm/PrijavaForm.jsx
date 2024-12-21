@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Button, Stack, Box, Text, Link} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
   const [email, setEmail] = useState('');
@@ -11,36 +12,62 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (!email || !password) {
       setError('Sva polja su obavezna!');
       return;
     }
-    setError('');
-    navigate('/kupac');
-    setLoginDialogOpen(false);
+  
+    try {
+      const response = await axios.post(
+        `http://localhost:5119/User/Login/${email}/${password}`
+      );
+  
+      if (response.status === 200) {
+        const sessionKey = response.data;
+        localStorage.setItem('sessionKey',sessionKey);
+        console.log('Uspešno prijavljivanje! Sesija:', sessionKey);
+        setLoginDialogOpen(false);
+        navigate('/kupac');
+      }
+    } catch (err) {
+      if (err.response && err.response.data) {
+        setError(err.response.data);
+      } else {
+        setError('Došlo je do greške prilikom prijavljivanja.');
+      }
+    }
   };
 
-  const handleRegisterSubmit = (e) => {
-
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!ime || !prezime || !email || !password) {
       setError('Sva polja su obavezna!');
       return;
     }
-    else
-    {
+  
+    try {
+      const response = await axios.post('http://localhost:5119/User/Register', {
+        firstName: ime,
+        lastName: prezime,
+        email : email,
+        password : password,
+      });
+      console.log(response.data);
       setRegisterDialogOpen(false);
       setIme('');
       setPrezime('');
       setEmail('');
       setPassword('');
+      setError('');
+    } catch (error) {
+      setError(error.response?.data || 'Greška pri registraciji!');
     }
-    setError('');
   };
+  
 
   const handleChangeToLogin = (e) => {
 

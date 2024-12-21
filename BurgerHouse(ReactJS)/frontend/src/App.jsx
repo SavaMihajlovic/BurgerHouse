@@ -7,6 +7,7 @@ import { Order } from "./pages/Order";
 import Navbar from "./components/Navbar/Navbar";
 import { HomeKupac } from "./pages/HomeKupac";
 import { MyOrders } from "./pages/MyOrders";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 
 const App = () => {
@@ -20,9 +21,13 @@ const App = () => {
             <Navbar setLoginDialogOpen={setLoginDialogOpen}/>
               <Routes>
                 <Route path="/" element={<Home loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
-                <Route path="/kupac" element={<HomeKupac loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
-                <Route path="/kupac-order" element={<Order/>} />
-                <Route path="/kupac-my-orders" element={<MyOrders/>} />
+
+                <Route element={<PrivateRoutes />}>
+                  <Route path="/kupac" element={<HomeKupac loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
+                  <Route path="/kupac-order" element={<Order/>} />
+                  <Route path="/kupac-my-orders" element={<MyOrders/>} />
+                </Route>
+
               </Routes>
           </BrowserRouter>
         </div>

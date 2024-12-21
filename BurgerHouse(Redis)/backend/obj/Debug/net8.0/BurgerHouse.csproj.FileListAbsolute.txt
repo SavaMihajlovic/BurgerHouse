@@ -143,3 +143,4 @@ C:\Users\Windows\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.
 C:\Users\Windows\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.pdb
 C:\Users\Windows\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\BurgerHouse.genruntimeconfig.cache
 C:\Users\Windows\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\obj\Debug\net8.0\ref\BurgerHouse.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\BCrypt.Net-Next.dll

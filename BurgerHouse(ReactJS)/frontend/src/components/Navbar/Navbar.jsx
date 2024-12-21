@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BsList } from 'react-icons/bs'; 
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
 
 const Navbar = ({ setLoginDialogOpen }) => {
@@ -8,6 +8,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
   const [isHomePage, setIsHomePage] = useState(false);
   const [role, setRole] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const pathname = location.pathname;
@@ -38,6 +39,14 @@ const Navbar = ({ setLoginDialogOpen }) => {
     setLoginDialogOpen(true);
   };
 
+  const handleLogout = () => {
+    const sessionKey = localStorage.getItem('sessionKey');
+    if(sessionKey) {
+      localStorage.removeItem('sessionKey');
+      navigate('/');
+    }
+  }
+
   const getMenuItems = () => {
       switch (role) {
         case 'Kupac':
@@ -46,7 +55,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
                 <li><Link to="/kupac" onClick={handleMenuClick}>Početna</Link></li>
                 <li><Link to="/kupac-order" onClick={handleMenuClick}>Naruči</Link></li>
                 <li><Link to="/kupac-my-orders" onClick={handleMenuClick}>Moje narudžbine</Link></li>
-                <li><Link to="/" onClick={handleMenuClick}>Odjava</Link></li>
+                <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
               </>
           );  
 

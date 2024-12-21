@@ -690,24 +690,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Windows\\.nuget\\packages\\": {},
-    "E:\\VS 2019 components, tools, SDKS\\NuGetPackages": {}
+    "C:\\Users\\msava\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Windows\\Desktop\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
+      "projectUniqueName": "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
       "projectName": "BurgerHouse",
-      "projectPath": "C:\\Users\\Windows\\Desktop\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
-      "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Windows\\Desktop\\NapredneBaze\\BurgerHouse(Redis)\\backend\\obj\\",
+      "projectPath": "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
+      "packagesPath": "C:\\Users\\msava\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "E:\\VS 2019 components, tools, SDKS\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Windows\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\msava\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -769,7 +764,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

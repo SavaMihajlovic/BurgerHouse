@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import homeImg from '../img/home.png'
 import burger1 from '../img/burger1.png'
@@ -11,6 +11,15 @@ export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const sessionKey = localStorage.getItem('sessionKey');
+    if (sessionKey) {
+      navigate('/kupac');
+    } else {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
