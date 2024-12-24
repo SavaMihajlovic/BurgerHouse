@@ -1,3 +1,4 @@
+
 [ApiController]
 [Route("[controller]")]
 public class UserController : ControllerBase
@@ -22,19 +23,27 @@ public class UserController : ControllerBase
                 return BadRequest("Invalid email!");
             if(string.IsNullOrEmpty(user.Password) || user.Password.Length < 8 || !user.Password.Any(char.IsDigit) || !user.Password.Any(char.IsPunctuation))
                 return BadRequest("Password is empty or invalid (atleast 8 characters , atleast one digit and punctuation)");
+            if(string.IsNullOrEmpty(user.Role))
+                return BadRequest("User must have a role");
+            if(user.Role!="user" && user.Role!="worker" && user.Role!="admin")
+                return BadRequest("User must be worker or user");
             var db = _redis.GetDatabase();
             var userKey = user.Email;
             var redisKey = $"user:{userKey}";
             if(await db.KeyExistsAsync(redisKey))
                 return BadRequest("User already exists");
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            await db.HashSetAsync(redisKey , 
-            [
-                new HashEntry("firstname" , user.FirstName),
-                new HashEntry("lastname" , user.LastName),
-                new HashEntry("password" , hashedPassword),
-                new HashEntry("digitalcurrency" , 0.00)
-            ]);
+
+            var hashEntries = new List<HashEntry>
+            {
+                new HashEntry("firstname", user.FirstName),
+                new HashEntry("lastname", user.LastName),
+                new HashEntry("password", hashedPassword),
+                new HashEntry("role", user.Role)
+            };
+            if (user.Role == "user")
+                hashEntries.Add(new HashEntry("digitalcurrency", 0.00));
+            await db.HashSetAsync(redisKey , hashEntries.ToArray());
             await db.SetAddAsync("users:all" , user.Email);
             return Ok($"Registered sucessfully, redisKey={redisKey}");
         }
@@ -73,7 +82,7 @@ public class UserController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpPost("GetSession/{sessionKey}")]
+    [HttpGet("GetSession/{sessionKey}")]
     public async Task<ActionResult> GetSession(string sessionKey)
     {
         try
@@ -84,14 +93,42 @@ public class UserController : ControllerBase
             var redisKey = $"session:{sessionKey}";
             if(!await db.KeyExistsAsync(redisKey))
                 return NotFound("session does not exist or is expired");
+            RedisValue value = await db.StringGetAsync(redisKey);
             await db.KeyExpireAsync(redisKey , TimeSpan.FromMinutes(30));
-            return Ok("Session extended");
+            return Ok(value.ToString());
             
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
+    }
+    [HttpPost("Logout/{sessionKey}")]
+    public async Task<ActionResult> Logout(string sessionKey)
+    {
+        if(string.IsNullOrEmpty(sessionKey))
+            return BadRequest("session key does not exist");
+        var db = _redis.GetDatabase();
+        var redisKey = $"session:{sessionKey}";
+            if(await db.KeyExistsAsync(redisKey))
+               await db.KeyDeleteAsync(redisKey);
+        return Ok("Succesful logout");
+    }
+    [HttpGet("GetUser/{key}")]
+    public async Task<ActionResult> GetUser(string key)
+    {
+        if (string.IsNullOrEmpty(key))
+            return BadRequest("key does not exist");
+        var db = _redis.GetDatabase();
+        var redisKey = $"user:{key}";
+        if(!await db.KeyExistsAsync(redisKey))
+            return BadRequest("user does not exist");
+        HashEntry[] fields = await db.HashGetAllAsync(redisKey);
+        var fieldList = fields.ToDictionary(
+                field => field.Name.ToString(),
+                field => field.Value.ToString()
+        );
+        return Ok(fieldList);
     }
 
 }

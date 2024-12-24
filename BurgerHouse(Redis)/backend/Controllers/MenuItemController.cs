@@ -79,6 +79,14 @@ public class MenuItemController : ControllerBase
                 field => field.Name.ToString(),
                 field => field.Value.ToString()
             );
+            key = key.Replace(":" , "_");
+            var imagePath = Path.Combine("Images" , $"{key}.jpg");
+            if (System.IO.File.Exists(imagePath)){
+                var imageBytes = System.IO.File.ReadAllBytes(imagePath);
+                var base64Image = Convert.ToBase64String(imageBytes);
+                var contentType = "image/jpeg";
+                fieldList.Add("image" , $"data:{contentType};base64,{base64Image}");
+            }
             return Ok(fieldList);
         }
         catch (Exception ex)
