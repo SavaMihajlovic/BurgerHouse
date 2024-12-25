@@ -1,31 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from '../components/Navbar/Menu/Menu.module.css';
+import { Button, Card, Image, Text, HStack, Input} from "@chakra-ui/react";
+import MobileStepper from '@/components/MobileStepper/MobileStepper';
+import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText,
+} from "@/components/ui/select"
+
 
 export const Order = () => {
   const [items, setItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0); 
+
+  useEffect(() => {
+    console.log("Updated Total:", totalAmount);
+  }, [totalAmount]); // Ovaj useEffect će se pozvati svaki put kad se `totalAmount` promeni
+  
+
+  const handleAddItem = (price) => {
+    const newTotal = totalAmount + Number(price);
+    setTotalAmount(newTotal);
+  };
+
+  const handleRemoveItem = (price) => {
+    const newTotal = totalAmount - Number(price);
+    setTotalAmount(newTotal);
+  };
+
 
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        // Dobijamo niz stringova
+
         const allItemsResponse = await axios.get('http://localhost:5119/MenuItem/ReadAllItems');
         const allItems = allItemsResponse.data;
 
-        // Mapiramo niz stringova i izvlačimo deo posle "menu:"
         const itemDetailsPromises = allItems.map(async (item) => {
-          const parts = item.split(':');
-          const itemName = parts.slice(1).join(':'); 
 
-          console.log(itemName);
-
-          if (!itemName) {
-            console.error(`Invalid item format: ${item}`);
-            return null;
-          }
-
-          const itemDetailsResponse = await axios.get(`http://localhost:5119/MenuItem/ReadItem?name=${itemName}`);
-          console.log(itemDetailsResponse.data);
+          const itemDetailsResponse = await axios.get(`http://localhost:5119/MenuItem/ReadItem/${item}`);
           return itemDetailsResponse.data;
         });
 
@@ -41,19 +51,62 @@ export const Order = () => {
   }, []);
 
   return (
-
-    <section>
-    <div className="items-container">
-      <h3 style={{ marginTop: '20px', fontWeight: 'bold' }}>Ponuda:</h3>
-      <div className="menu-container">
-        {items.map((item, index) => (
-          <div key={index} className={`${styles.menubox}`}>
-            <h2>{item.name}</h2>
-            <i className="bx bx-cart"></i>
+    <div className='sekcije'>
+      <section>
+        <div className="items-container">
+          <div className="menu-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+            {items.map((item, index) => (
+              <Card.Root 
+                key={item.id || index} 
+                maxW="sm" 
+                overflow="hidden" 
+                style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  height: '100%', 
+                  flex: '1 1 300px', 
+                }}
+              >
+                <Image
+                  alt={item.name} 
+                  src={item.image ? `${item.image}` : ''}
+                  style={{
+                    width: '100%', 
+                    height: '200px', 
+                    objectFit: 'cover', 
+                  }}
+                />
+                <Card.Body 
+                  style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    flexGrow: 1, 
+                    padding: '10px'
+                  }} 
+                  gap="2"
+                >
+                  <Card.Title>{item.name}</Card.Title>
+                  <Card.Description>
+                    {item.description || 'No description available.'}
+                  </Card.Description>
+                  <div style={{ marginTop: 'auto' }}>
+                    <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight">
+                      {item.price || 'N/A'} din
+                    </Text>
+                  </div>
+                </Card.Body>
+                <Card.Footer gap="2">
+                  <MobileStepper 
+                    handleAddItem={handleAddItem} 
+                    handleRemoveItem={handleRemoveItem} 
+                    price={item.price}
+                  />
+                </Card.Footer>
+              </Card.Root>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
     </div>
-    </section>
   );
 };

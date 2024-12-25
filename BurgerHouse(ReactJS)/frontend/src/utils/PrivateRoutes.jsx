@@ -13,7 +13,7 @@ const PrivateRoutes = () => {
       return;
     }
 
-    axios.post(`http://localhost:5119/User/GetSession/${sessionKey}`)
+    axios.get(`http://localhost:5119/User/GetSession/${sessionKey}`)
       .then((response) => {
         if (response.status !== 200) {
           navigate('/'); 

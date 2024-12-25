@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsList } from 'react-icons/bs'; 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
+import axios from 'axios';
 
 const Navbar = ({ setLoginDialogOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,11 +40,19 @@ const Navbar = ({ setLoginDialogOpen }) => {
     setLoginDialogOpen(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const sessionKey = localStorage.getItem('sessionKey');
-    if(sessionKey) {
-      localStorage.removeItem('sessionKey');
-      navigate('/');
+    if (sessionKey) {
+      try {
+        const response = await axios.post(`http://localhost:5119/User/Logout/${sessionKey}`);
+        console.log('Odjava uspešna:', response.data); 
+      } catch (error) {
+        console.error('Greška pri odjavi:', error);
+        alert('Došlo je do greške prilikom odjave. Pokušajte ponovo.');
+      } finally {
+        localStorage.removeItem('sessionKey');
+        navigate('/');
+      }
     }
   }
 
