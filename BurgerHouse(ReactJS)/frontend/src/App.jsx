@@ -13,12 +13,12 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 const App = () => {
 
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
-
+  
   return (
       <div className= 'container'>
         <div className={loginDialogOpen ? 'overlay' : ''}>
           <BrowserRouter>
-            <Navbar setLoginDialogOpen={setLoginDialogOpen}/>
+            <Navbar setLoginDialogOpen={setLoginDialogOpen} />
               <Routes>
                 <Route path="/" element={<Home loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
 

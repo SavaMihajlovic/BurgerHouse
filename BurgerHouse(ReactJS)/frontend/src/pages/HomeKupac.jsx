@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import homeImg from '../img/home.png'
 import Footer from '../components/Navbar/Footer/Footer';
 import axios from 'axios';
+import { UserFetch } from '@/components/UserFetch/UserFetch';
 
 export const HomeKupac = ({loginDialogOpen,setLoginDialogOpen}) => {
 
@@ -12,39 +13,16 @@ export const HomeKupac = ({loginDialogOpen,setLoginDialogOpen}) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const sessionKey = localStorage.getItem('sessionKey');
-  
-      if (!sessionKey) {
+      const user = await UserFetch();
+      if (!user) {
         navigate('/'); 
-        return;
-      }
-
-      try {
-        const sessionResponse = await axios.get(`http://localhost:5119/User/GetSession/${sessionKey}`);
-        const key = sessionResponse.data;
-        
-        const userResponse = await axios.get(`http://localhost:5119/User/GetUser/${key}`);
-        setUser(userResponse.data); 
-      } catch (error) {
-        console.error('Greška pri učitavanju podataka:', error);
-        navigate('/'); 
+      } else {
+        setUser(user); 
       }
     };
-
+  
     fetchUserData();
   }, [navigate]);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuClick = () => {
-    setMenuOpen(false);
-  };
-
-  const handleOrderClick = () => {
-    setLoginDialogOpen(true);
-  };
 
   return (
     <>

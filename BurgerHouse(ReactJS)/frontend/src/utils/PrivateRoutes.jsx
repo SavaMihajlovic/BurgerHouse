@@ -16,11 +16,13 @@ const PrivateRoutes = () => {
     axios.get(`http://localhost:5119/User/GetSession/${sessionKey}`)
       .then((response) => {
         if (response.status !== 200) {
+          localStorage.removeItem('sessionKey');
           navigate('/'); 
         }
       })
       .catch((error) => {
         console.error('Greška pri proveri sesije:', error);
+        localStorage.removeItem('sessionKey');
         navigate('/');
       });
   }, [navigate]);

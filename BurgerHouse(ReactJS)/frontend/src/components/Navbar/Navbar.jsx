@@ -1,31 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { BsList } from 'react-icons/bs'; 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Avatar } from "@/components/ui/avatar"
 import styles from './Navbar.module.css';
 import axios from 'axios';
+import { UserFetch } from '../UserFetch/UserFetch';
 
 const Navbar = ({ setLoginDialogOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isHomePage, setIsHomePage] = useState(false);
   const [role, setRole] = useState('');
+  const [userData, setUserData] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const pathname = location.pathname;
+    const fetchUserData = async () => {
+      const pathname = location.pathname;
 
-    if(pathname.startsWith('/kupac')) 
-    {
-      setRole("Kupac");
-    }
-    else if (pathname.startsWith('/administrator')) 
-    {
-      setRole("Admin");
-    } 
-    else 
-      setRole('');
-    
-  }, [location]);
+      if (pathname.startsWith('/kupac')) {
+        setRole('Kupac');
+      } else if (pathname.startsWith('/administrator')) {
+        setRole('Admin');
+      } else {
+        setRole('');
+      }
+
+      const fetchedUser = await UserFetch();
+      if (fetchedUser) {
+        setUserData(fetchedUser); // Sačuvaj korisničke podatke
+      } else {
+        navigate('/');
+      }
+    };
+
+    fetchUserData();
+  }, [location, navigate]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -57,6 +66,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
   }
 
   const getMenuItems = () => {
+
       switch (role) {
         case 'Kupac':
           return (
@@ -65,6 +75,18 @@ const Navbar = ({ setLoginDialogOpen }) => {
                 <li><Link to="/kupac-order" onClick={handleMenuClick}>Naruči</Link></li>
                 <li><Link to="/kupac-my-orders" onClick={handleMenuClick}>Moje narudžbine</Link></li>
                 <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
+                {menuOpen === false && (
+                <li className={styles.avatarContainer}>
+                  <Avatar
+                    className={styles['avatar-padding']}
+                    size="sm"
+                    variant="subtle"
+                    name={`${userData?.firstname || ''} ${userData?.lastname || ''}`}
+                  />
+                  <span className={styles.balance}>Balans: {userData?.digitalcurrency} RSD</span>
+                </li>
+                )}
+
               </>
           );  
 

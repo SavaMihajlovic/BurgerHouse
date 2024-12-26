@@ -540,3 +540,17 @@ section {
   backdrop-filter: blur(10px);
   z-index: 10;
 }
+
+.payment-footer {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 98%;
+  background-color: orangered;
+  color: white;
+  text-align: center;
+  padding: 15px 0; 
+  cursor: pointer;
+  border-radius: 15px; 
+}

@@ -6,3 +6,19 @@
     color: orangered; 
     font-weight: bold; 
   }
+
+.avatarContainer {
+    display: flex;
+    align-items: center; 
+    position: relative;
+    top: -5px;
+  }
+  
+.avatar-padding {
+    padding: 10px;
+  }
+  
+.balance {
+    margin-left: 10px; 
+    font-size: 16px; 
+  }
