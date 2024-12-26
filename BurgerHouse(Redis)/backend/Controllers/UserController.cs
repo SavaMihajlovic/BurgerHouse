@@ -42,7 +42,7 @@ public class UserController : ControllerBase
                 new HashEntry("role", user.Role)
             };
             if (user.Role == "user")
-                hashEntries.Add(new HashEntry("digitalcurrency", 0.00));
+                hashEntries.Add(new HashEntry("digitalcurrency", 100000.00));
             await db.HashSetAsync(redisKey , hashEntries.ToArray());
             await db.SetAddAsync("users:all" , user.Email);
             return Ok($"Registered sucessfully, redisKey={redisKey}");
@@ -94,7 +94,6 @@ public class UserController : ControllerBase
             if(!await db.KeyExistsAsync(redisKey))
                 return NotFound("session does not exist or is expired");
             RedisValue value = await db.StringGetAsync(redisKey);
-            await db.KeyExpireAsync(redisKey , TimeSpan.FromMinutes(30));
             return Ok(value.ToString());
             
         }
