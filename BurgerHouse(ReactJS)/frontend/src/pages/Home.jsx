@@ -5,6 +5,7 @@ import burger1 from '../img/burger1.png'
 import Menu from '../components/Navbar/Menu/Menu';
 import Footer from '../components/Navbar/Footer/Footer';
 import LoginForm from '../components/PrijavaForm/PrijavaForm';
+import { HashLink } from 'react-router-hash-link';
 
 
 export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
@@ -49,9 +50,9 @@ export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
                 Najukusnija hrana u gradu
             </h2>
             <p>Naši burgeri su pravljeni od svežih i domaćih sastojaka.</p>
-            <a href="#about" className="button">
+            <HashLink to="#about" className="button">
                 Više o nama
-            </a>
+            </HashLink>
             </div>
             <div className="home-img">
             <img src={homeImg} alt="Home" />

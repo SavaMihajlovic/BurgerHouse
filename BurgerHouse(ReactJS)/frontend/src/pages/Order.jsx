@@ -21,14 +21,47 @@ export const Order = () => {
   const [items, setItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0); 
   const [selectedType, setSelectedType] = useState("");
-  const [userBalance, setUserBalance] = useState(0);
+  const [user, setUser] = useState(null);
+  const [orderList, setOrderList] = useState([]); // lista item-a za placanje
 
-  const handleAddItem = (price) => {
+  const handleAddItem = (price, key, quantity) => {
+    const existingItem = orderList.find(item => item.key === key);
+
+    let newOrderList;
+    if (existingItem) {
+      newOrderList = orderList.map(item =>
+        item.key === key ? { ...item, quantity: quantity } : item
+      );
+    } else {
+      newOrderList = [...orderList, { key, quantity }];
+    }
+
+    setOrderList(newOrderList);
+
     const newTotal = totalAmount + Number(price);
     setTotalAmount(newTotal);
   };
 
-  const handleRemoveItem = (price) => {
+  const handleRemoveItem = (price, key, quantity) => {
+
+    const existingItem = orderList.find(item => item.key === key);
+
+    let newOrderList;
+
+    if (existingItem) {
+      if (quantity === 0) {
+        newOrderList = orderList.filter(item => item.key !== key);
+      } else {
+        newOrderList = orderList.map(item =>
+          item.key === key ? { ...item, quantity: quantity } : item
+        );
+      }
+    } else {
+      newOrderList = orderList;
+    }
+
+    setOrderList(newOrderList);
+
     const newTotal = totalAmount - Number(price);
     setTotalAmount(newTotal);
   };
@@ -47,8 +80,9 @@ export const Order = () => {
 
         
         const itemDetailsPromises = allItems.map(async (item) => {
-          const itemDetailsResponse = await axios.get(`http://localhost:5119/MenuItem/ReadItem/${selectedType === "" ? item : item.key}`);
-          return itemDetailsResponse.data;
+          const key = selectedType === "" ? item : item.key;
+          const itemDetailsResponse = await axios.get(`http://localhost:5119/MenuItem/ReadItem/${key}`);
+          return { key, ...itemDetailsResponse.data };
         });
   
         const detailedItems = await Promise.all(itemDetailsPromises);
@@ -56,7 +90,7 @@ export const Order = () => {
   
         const user = await UserFetch();
         if (user) {
-          setUserBalance(user.digitalcurrency); 
+          setUser(user); 
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -68,6 +102,30 @@ export const Order = () => {
 
   const handleSelectChange = (item) => {
     setSelectedType(item.value);
+  };
+
+  const handlePayment = async () => {
+    if (user.digitalcurrency >= totalAmount) {
+      const orderData = {
+        userID: `user:${user.userEmail}`, 
+        items: orderList.map(item => ({
+          itemKey: item.key,  
+          quantity: item.quantity
+        })),
+        createdAt: new Date().toISOString()  
+      };
+
+      console.log(orderData);
+
+      try {
+        const response = await axios.post('http://localhost:5119/Order/MakeOrder', orderData);
+        console.log('Order placed successfully', response.data);
+      } catch (error) {
+        console.error('Error placing order', error);
+      }
+    } else {
+      alert('Nema dovoljno sredstava za plaćanje!');
+    }
   };
 
   return (
@@ -139,6 +197,7 @@ export const Order = () => {
                     handleAddItem={handleAddItem} 
                     handleRemoveItem={handleRemoveItem} 
                     price={item.price}
+                    itemKey={item.key}
                   />
                 </Card.Footer>
               </Card.Root>
@@ -149,7 +208,7 @@ export const Order = () => {
     </div>
 
     {totalAmount > 0 && (
-         <div className="payment-footer">
+         <div className="payment-footer" onClick={handlePayment}>
          <Text fontSize="md">
            Idi na plaćanje <span style={{fontWeight: 'bolder'}}>{totalAmount} RSD</span>
          </Text>

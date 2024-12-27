@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar/Navbar";
 import { HomeKupac } from "./pages/HomeKupac";
 import { MyOrders } from "./pages/MyOrders";
 import PrivateRoutes from "./utils/PrivateRoutes";
+import { HomeRadnik } from "./pages/HomeRadnik";
+import { OrdersView } from "./pages/OrdersView";
 
 
 const App = () => {
@@ -26,6 +28,8 @@ const App = () => {
                   <Route path="/kupac" element={<HomeKupac loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
                   <Route path="/kupac-order" element={<Order/>} />
                   <Route path="/kupac-my-orders" element={<MyOrders/>} />
+                  <Route path="/radnik" element={<HomeRadnik/>} />
+                  <Route path="/radnik-orders-view" element={<OrdersView/>} />
                 </Route>
 
               </Routes>

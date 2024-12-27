@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, HStack } from "@chakra-ui/react";
 
-const MobileStepper = ({ defaultValue = 0, min = 0, max = 10, handleAddItem, handleRemoveItem, price}) => {
+const MobileStepper = ({ defaultValue = 0, min = 0, max = 10, handleAddItem, handleRemoveItem, price, itemKey}) => {
   const [value, setValue] = useState(defaultValue);
 
   const increment = () => {
     if (value < max) {
-      setValue(value + 1);
-      handleAddItem(price);
+      const newValue = value + 1;
+      setValue(newValue);
+      handleAddItem(price, itemKey, newValue );
     }
   };
 
   const decrement = () => {
     if (value > min) {
-      setValue(value - 1);
-      handleRemoveItem(price);
+      const newValue = value - 1;
+      setValue(newValue);
+      handleRemoveItem(price, itemKey, newValue );
     }
   };
 

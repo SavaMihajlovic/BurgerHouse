@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Input, Button, Stack, Box, Text, Link} from '@chakra-ui/react';
+import { Input, Button, Stack, Box, Text, Link, HStack} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Radio, RadioGroup } from "@/components/ui/radio"
+import { use } from 'react';
 
 const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
   const [email, setEmail] = useState('');
   const [ime, setIme] = useState('');
   const [prezime, setPrezime] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState("user");
   const [error, setError] = useState('');
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -55,6 +58,7 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
         lastName: prezime,
         email : email,
         password : password,
+        role : role
       });
       console.log(response.data);
       setRegisterDialogOpen(false);
@@ -75,6 +79,7 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
     setPrezime('');
     setEmail('');
     setPassword('');
+    setRole('');
 
     e.preventDefault();
     setError('');
@@ -88,9 +93,15 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
     setEmail('');
     setPassword('');
 
+
     e.preventDefault();
     setError('');
     setRegisterDialogOpen(true);
+  };
+
+  const handleOnChange = (event) => {
+    const value = event.target.value;
+    setRole(value);
   };
 
   return (
@@ -267,6 +278,13 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
                   </Text>
                 )}
               </Box>
+
+              <RadioGroup defaultValue="user" onChange={handleOnChange}>
+                <HStack gap="6">
+                  <Radio value="user" color="black">Kupac</Radio>
+                  <Radio value="worker" color="black">Radnik</Radio>
+                </HStack>
+              </RadioGroup>
 
               <Button colorScheme="blue" width="full" mt={4} onClick={handleRegisterSubmit} w={320} mb={3}>
                   Registrujte se

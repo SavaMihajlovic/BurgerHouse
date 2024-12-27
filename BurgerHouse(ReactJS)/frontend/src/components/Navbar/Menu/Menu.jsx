@@ -16,13 +16,13 @@ const Menu = () => {
 
         switch(category) {
             case "Burgeri":
-                endpoint = 'http://localhost:5119/MenuItem/ReadAllBurgers';
+                endpoint = 'http://localhost:5119/MenuItem/ReadAllSpecific/burger';
                 break;
             case "Prilozi":
-                endpoint = 'http://localhost:5119/MenuItem/ReadAllFries';
+                endpoint = 'http://localhost:5119/MenuItem/ReadAllSpecific/fries';
                 break;
             case "Sokovi":
-                endpoint = 'http://localhost:5119/MenuItem/ReadAllBurgers';
+                endpoint = 'http://localhost:5119/MenuItem/ReadAllSpecific/drinks';
                 break;
             default:
                 return;
@@ -31,10 +31,9 @@ const Menu = () => {
         try {
           const response = await axios.get(endpoint);
           const formattedItems = response.data.map(item => {
-            const parts = item.split(':'); 
             return {
-              category: parts[1],
-              name: parts[2]
+              category: item.key,
+              name: item.name
             };
           });
           setItems(formattedItems);

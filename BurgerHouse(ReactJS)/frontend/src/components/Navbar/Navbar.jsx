@@ -5,6 +5,7 @@ import { Avatar } from "@/components/ui/avatar"
 import styles from './Navbar.module.css';
 import axios from 'axios';
 import { UserFetch } from '../UserFetch/UserFetch';
+import { HashLink } from 'react-router-hash-link';
 
 const Navbar = ({ setLoginDialogOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,15 +20,15 @@ const Navbar = ({ setLoginDialogOpen }) => {
 
       if (pathname.startsWith('/kupac')) {
         setRole('Kupac');
-      } else if (pathname.startsWith('/administrator')) {
-        setRole('Admin');
+      } else if (pathname.startsWith('/radnik')) {
+        setRole('Radnik');
       } else {
         setRole('');
       }
 
       const fetchedUser = await UserFetch();
       if (fetchedUser) {
-        setUserData(fetchedUser); // Sačuvaj korisničke podatke
+        setUserData(fetchedUser); 
       } else {
         navigate('/');
       }
@@ -90,21 +91,24 @@ const Navbar = ({ setLoginDialogOpen }) => {
               </>
           );  
 
-        case 'Admin':
+        case 'Radnik':
           return (
               <>
+                <li><Link to="/radnik" onClick={handleMenuClick}>Početna</Link></li>
+                <li><Link to="/radnik-orders-view" onClick={handleMenuClick}>Naruči</Link></li>
+                <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
               </>
               );
 
         default:
           return (
             <>
-                <li><a href="#home" onClick={handleMenuClick}>Početna</a></li>
-                <li><a href="#about" onClick={handleMenuClick}>O nama</a></li>
-                <li><a href="#menu" onClick={handleMenuClick}>Jelovnik</a></li>
-                <li><a href="#order" onClick={handleMenuClick}>Naruči</a></li>
-                <li><a href="#contact" onClick={handleMenuClick}>Kontakt</a></li>
-                <li><a href="#home" onClick={handleLoginClick}>Prijava</a></li>
+                <li><HashLink to="#home" onClick={handleMenuClick}>Početna</HashLink></li>
+                <li><HashLink to="#about" onClick={handleMenuClick}>O nama</HashLink></li>
+                <li><HashLink to="#menu" onClick={handleMenuClick}>Jelovnik</HashLink></li>
+                <li><HashLink to="#order" onClick={handleMenuClick}>Naruči</HashLink></li>
+                <li><HashLink to="#contact" onClick={handleMenuClick}>Kontakt</HashLink></li>
+                <li><HashLink to="#home" onClick={handleLoginClick}>Prijava</HashLink></li>
             </>
           );
     }
@@ -112,9 +116,9 @@ const Navbar = ({ setLoginDialogOpen }) => {
 
   return (
     <header>
-      <a href="#home" className="logo">
+      <HashLink to="#home" className="logo">
         BurgerHouse
-      </a>
+      </HashLink>
       <div
         className={`${styles.burgerMenu} bx bx-menu ${menuOpen ? "open" : ""}`}
         id="menu-icon"

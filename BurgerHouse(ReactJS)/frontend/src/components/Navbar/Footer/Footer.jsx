@@ -16,13 +16,13 @@ const Footer = () => {
                 <a href="https://www.facebook.com">
                   <BsFacebook />
                 </a>
-                <a href="https://www.instagram.com/shunnu02">
+                <a href="https://www.instagram.com">
                   <BsInstagram />
                 </a>
                 <a href="https://www.youtube.com">
                   <BsYoutube />
                 </a>
-                <a href="https://www.github.com/0rigin-c0de">
+                <a href="https://www.github.com">
                   <BsGithub />
                 </a>
               </div>

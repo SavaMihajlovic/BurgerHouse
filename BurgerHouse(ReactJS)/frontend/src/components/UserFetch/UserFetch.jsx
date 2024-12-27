@@ -13,7 +13,7 @@ export const UserFetch = async () => {
     const userEmail = sessionResponse.data;
 
     const userResponse = await axios.get(`http://localhost:5119/User/GetUser/${userEmail}`);
-    return userResponse.data; 
+    return {...userResponse.data, userEmail}; 
   } catch (error) {
     console.error('Greška pri preuzimanju korisničkih podataka:', error);
     return null; 
