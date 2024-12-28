@@ -130,4 +130,38 @@ public class UserController : ControllerBase
         return Ok(fieldList);
     }
 
+
+    [HttpGet("GetNotifications/{userKey}/{role}")]
+    public async Task<ActionResult> GetNotification(string userKey , string role)
+    {
+        if (string.IsNullOrEmpty(userKey))
+            return BadRequest("key does not exist");
+        if(role != "user")
+            return Unauthorized("Only users can get notifications");
+        var db = _redis.GetDatabase();
+        var subscriber = _redis.GetSubscriber();
+        var redisKey = $"user:{userKey}";
+        if(!await db.KeyExistsAsync(redisKey))
+            return BadRequest("user does not exist");
+        var tcs = new TaskCompletionSource<string>();
+        await subscriber.SubscribeAsync(RedisChannel.Literal($"notification:{redisKey}"), (channel, message) =>
+        {
+            tcs.SetResult(message!);
+        });
+
+    
+        var message = await Task.WhenAny(tcs.Task, Task.Delay(10000)); 
+
+        if (message == tcs.Task)
+        {
+            return Ok(tcs.Task.Result);
+        }
+        else
+        {
+            
+            return BadRequest("No message received within timeout.");
+        }
+
+    }
+
 }

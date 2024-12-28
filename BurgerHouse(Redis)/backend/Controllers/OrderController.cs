@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 [ApiController]
 [Route("[controller]")]
 public class OrderController : ControllerBase
@@ -53,7 +55,7 @@ public class OrderController : ControllerBase
 
             await db.HashSetAsync(redisKey , hashEntries.ToArray());
 
-            await db.KeyExpireAsync(redisKey , TimeSpan.FromHours(24));
+            //await db.KeyExpireAsync(redisKey , TimeSpan.FromHours(24));
 
             string sortedSetKey = "sortedOrders";
             double unixTimestamp = ((DateTimeOffset)order.CreatedAt).ToUnixTimeSeconds();
@@ -145,6 +147,43 @@ public class OrderController : ControllerBase
         }
     }
 
+    [HttpPost("ConfirmOrder/{orderKey}")]
+    public async Task<ActionResult> ConfirmOrder(string orderKey)
+    {
+        try
+        {
+            if(string.IsNullOrEmpty(orderKey))
+                return BadRequest("empty key");
+            var db = _redis.GetDatabase();
+            var subscriber = _redis.GetSubscriber();
+            if(!await db.KeyExistsAsync(orderKey))
+                return BadRequest("order does not exist");
+            string ordersKey = "sortedOrders";
+            var score = await db.SortedSetScoreAsync(ordersKey, orderKey);
+
+            if (!score.HasValue)
+                return BadRequest("Order not in orders");
+            
+            var partOfKey = orderKey.Split(':');
+            string user = $"{partOfKey[1]}:{partOfKey[2]}";
+            string id = partOfKey[3];
+
+            await subscriber.PublishAsync(RedisChannel.Literal($"notification:{user}"),$"Narudzbina:{id} je kompletirana!");
+            await db.HashSetAsync(orderKey , [
+                new HashEntry("completedAt" , DateTime.Now.ToString()),
+            ]);
+            await db.KeyExpireAsync(orderKey, TimeSpan.FromHours(2));
+            await db.SortedSetRemoveAsync(ordersKey , orderKey);
+            return Ok("Order completed");
+
+
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
 
 
 }
