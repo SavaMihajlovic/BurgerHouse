@@ -13,16 +13,17 @@ export const HomeKupac = ({loginDialogOpen,setLoginDialogOpen}) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const user = await UserFetch();
-      if (!user) {
-        navigate('/'); 
+      const sessionKey = localStorage.getItem('sessionKey');
+      const user = await UserFetch(sessionKey);
+      if(user && user.role === 'user') {
+        setUser(user);
       } else {
-        setUser(user); 
+        navigate('/');
       }
     };
-  
+
     fetchUserData();
-  }, [navigate]);
+  }, []);
 
   return (
     <>

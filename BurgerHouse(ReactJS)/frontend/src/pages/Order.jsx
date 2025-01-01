@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Card, Image, Text, HStack, Input} from "@chakra-ui/react";
+import { Card, Image, Text} from "@chakra-ui/react";
 import MobileStepper from '@/components/MobileStepper/MobileStepper';
 import { createListCollection } from "@chakra-ui/react"
 import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText,
 } from "@/components/ui/select"
 import { UserFetch } from '@/components/UserFetch/UserFetch';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Order = () => {
@@ -23,6 +24,7 @@ export const Order = () => {
   const [selectedType, setSelectedType] = useState("");
   const [user, setUser] = useState(null);
   const [orderList, setOrderList] = useState([]); // lista item-a za placanje
+  const navigate = useNavigate();
 
   const handleAddItem = (price, key, quantity) => {
     const existingItem = orderList.find(item => item.key === key);
@@ -88,7 +90,8 @@ export const Order = () => {
         const detailedItems = await Promise.all(itemDetailsPromises);
         setItems(detailedItems.filter((item) => item !== null));
   
-        const user = await UserFetch();
+        const sessionKey = localStorage.getItem('sessionKey');
+        const user = await UserFetch(sessionKey);
         if (user) {
           setUser(user); 
         }
@@ -115,11 +118,11 @@ export const Order = () => {
         createdAt: new Date().toISOString()  
       };
 
-      console.log(orderData);
 
       try {
         const response = await axios.post('http://localhost:5119/Order/MakeOrder', orderData);
-        console.log('Order placed successfully', response.data);
+        alert('Uspešno ste kreirali narudžbinu!');
+        navigate('/kupac-my-orders');
       } catch (error) {
         console.error('Error placing order', error);
       }

@@ -24,10 +24,12 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
 
-                <Route element={<PrivateRoutes />}>
+                <Route element={<PrivateRoutes role = 'user' />}>
                   <Route path="/kupac" element={<HomeKupac loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
                   <Route path="/kupac-order" element={<Order/>} />
                   <Route path="/kupac-my-orders" element={<MyOrders/>} />
+                </Route>
+                <Route element={<PrivateRoutes role = 'worker' />}>  
                   <Route path="/radnik" element={<HomeRadnik/>} />
                   <Route path="/radnik-orders-view" element={<OrdersView/>} />
                 </Route>

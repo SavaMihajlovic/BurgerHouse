@@ -1,8 +1,7 @@
 import { UserFetch } from '@/components/UserFetch/UserFetch';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Image, Text, HStack, Input} from "@chakra-ui/react";
-import Steps from '@/components/Steps/Steps';
+import { Card } from "@chakra-ui/react";
 
 export const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -10,7 +9,8 @@ export const MyOrders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const user = await UserFetch();
+      const sessionKey = localStorage.getItem('sessionKey');
+      const user = await UserFetch(sessionKey);
       if (user) {
         setUser(user);
         try {
@@ -18,6 +18,8 @@ export const MyOrders = () => {
           const ordersResponse = await axios.get(
             `http://localhost:5119/Order/GetOrderFromUser/user:${user.userEmail}`
           );
+
+          console.log(ordersResponse.data);
 
           const orders = ordersResponse.data;
           const orderDetails = await Promise.all(
@@ -28,6 +30,7 @@ export const MyOrders = () => {
               const productDetails = await Promise.all(
                 Object.entries(items)
                   .filter(([key]) => !key.startsWith('createdAt'))
+                  .filter(([key]) => !key.startsWith('completedAt'))
                   .map(async ([productKey, quantity]) => {
                     const productResponse = await axios.get(
                       `http://localhost:5119/MenuItem/ReadItem/${productKey}`
@@ -43,6 +46,7 @@ export const MyOrders = () => {
                 orderNumber,
                 createdAt: items.createdAt,
                 products: productDetails,
+                completedAt: items.completedAt ? items.completedAt : undefined
               };
             })
           );
@@ -74,6 +78,8 @@ export const MyOrders = () => {
                 height: '100%',
                 flex: '1 1 300px',
                 marginBottom: '20px',
+                border: order.completedAt ? '5px solid green' : '5px solid yellow',
+                backgroundColor : order.completedAt ?  'lightgreen' : 'lightyellow'
               }}
             >
               <Card.Body
@@ -99,8 +105,23 @@ export const MyOrders = () => {
                   Kreirano: {order.createdAt}
                 </p>
 
-                <Steps/>
+                {order.completedAt && (
+                  <p style={{ marginTop: '10px', color: 'gray' }}>
+                  Kompletirano: {order.completedAt}
+                </p>
+                )}               
               </Card.Body>
+
+              {order.completedAt ? (
+                    <p style={{ color: 'black', alignSelf: 'center', margin: '0px 0px 10px 0px', fontWeight: 'bold'}}>
+                      Spremno.
+                    </p>
+                  ) : (
+                    <p style={{ color: 'black', alignSelf: 'center', margin: '0px 0px 10px 0px', fontWeight: 'bold'}}>
+                      U pripremi.
+                    </p>
+                  )}
+                
             </Card.Root>
           ))}
         </div>

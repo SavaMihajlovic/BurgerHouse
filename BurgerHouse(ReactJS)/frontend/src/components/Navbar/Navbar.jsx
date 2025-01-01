@@ -16,21 +16,21 @@ const Navbar = ({ setLoginDialogOpen }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const pathname = location.pathname;
 
-      if (pathname.startsWith('/kupac')) {
-        setRole('Kupac');
-      } else if (pathname.startsWith('/radnik')) {
-        setRole('Radnik');
+      const sessionKey = localStorage.getItem('sessionKey');
+      const user = await UserFetch(sessionKey);
+      if (user && user.role) {
+        setUserData(user);
+        if (user.role === "user") {
+          setRole('Kupac');
+        } else if (user.role === "worker") {
+          setRole('Radnik');
+        } else {
+          setRole('');
+        }
       } else {
         setRole('');
-      }
-
-      const fetchedUser = await UserFetch();
-      if (fetchedUser) {
-        setUserData(fetchedUser); 
-      } else {
-        navigate('/');
+        setUserData(null);
       }
     };
 
@@ -95,7 +95,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
           return (
               <>
                 <li><Link to="/radnik" onClick={handleMenuClick}>Početna</Link></li>
-                <li><Link to="/radnik-orders-view" onClick={handleMenuClick}>Naruči</Link></li>
+                <li><Link to="/radnik-orders-view" onClick={handleMenuClick}>Pregled narudžbina</Link></li>
                 <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
               </>
               );

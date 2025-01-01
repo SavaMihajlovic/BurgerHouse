@@ -6,6 +6,7 @@ import Menu from '../components/Navbar/Menu/Menu';
 import Footer from '../components/Navbar/Footer/Footer';
 import LoginForm from '../components/PrijavaForm/PrijavaForm';
 import { HashLink } from 'react-router-hash-link';
+import { UserFetch } from '@/components/UserFetch/UserFetch';
 
 
 export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
@@ -14,12 +15,23 @@ export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const sessionKey = localStorage.getItem('sessionKey');
-    if (sessionKey) {
-      navigate('/kupac');
-    } else {
-      navigate('/');
+    const checkUserRole = async() => {
+      const sessionKey = localStorage.getItem('sessionKey');
+      const user = await UserFetch(sessionKey);
+      if(user && user.role) {
+        if (user.role === 'user') {
+          navigate('/kupac');
+        } else if (user.role === 'worker') {
+          navigate('/radnik');
+        } else {
+          navigate('/');
+        }
+      }
+      else {
+        navigate('/');
+      }
     }
+    checkUserRole();
   }, [navigate]);
 
   const toggleMenu = () => {

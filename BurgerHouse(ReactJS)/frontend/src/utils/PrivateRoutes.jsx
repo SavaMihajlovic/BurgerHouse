@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { UserFetch } from '@/components/UserFetch/UserFetch';
 
-const PrivateRoutes = () => {
+const PrivateRoutes = ({role}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +26,17 @@ const PrivateRoutes = () => {
         localStorage.removeItem('sessionKey');
         navigate('/');
       });
-  }, [navigate]);
+
+
+      const checkUserRole = async() => {
+        const user = await UserFetch(sessionKey);
+        if(user && user.role !== role) {
+          navigate('/');
+        }
+      }
+
+      checkUserRole();
+  }, [navigate,role]);
 
   return <Outlet />; 
 };

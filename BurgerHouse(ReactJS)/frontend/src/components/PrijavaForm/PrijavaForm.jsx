@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Radio, RadioGroup } from "@/components/ui/radio"
 import { use } from 'react';
+import { UserFetch } from '../UserFetch/UserFetch';
 
 const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
   const [email, setEmail] = useState('');
@@ -33,7 +34,20 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
         localStorage.setItem('sessionKey',sessionKey);
         console.log('Uspešno prijavljivanje! Sesija:', sessionKey);
         setLoginDialogOpen(false);
-        navigate('/kupac');
+        
+        const user = await UserFetch(sessionKey);
+        if (user && user.role) {
+          console.log('Korisnička uloga:', user.role);
+          if (user.role === "user") {
+            navigate('/kupac');
+          } else if (user.role === "worker") {
+            navigate('/radnik');
+          } else {
+            navigate('/');
+          }
+        } else {
+          console.error('Nije moguće utvrditi korisničku ulogu:', user);
+        }
       }
     } catch (err) {
       if (err.response && err.response.data) {

@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-export const UserFetch = async () => {
-  const sessionKey = localStorage.getItem('sessionKey');
-
+export const UserFetch = async (sessionKey) => {
+  
   if (!sessionKey) {
     return null; 
   }
