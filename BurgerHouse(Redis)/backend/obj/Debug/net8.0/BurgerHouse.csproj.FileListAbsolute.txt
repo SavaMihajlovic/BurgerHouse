@@ -152,3 +152,11 @@ C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.
 C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\PayPalCheckoutSdk.dll
 C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\PayPalHttp-Dotnet.dll
 C:\Users\Nemanja\Desktop\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\System.Text.Json.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\PayPal.NET.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\PayPal.Sdk.Checkout.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\PayPalCheckoutSdk.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\PayPalHttp-Dotnet.dll
+C:\Users\msava\OneDrive\Desktop\IV GODINA\SEMESTAR 7\NAPREDNE BAZE PODATAKA\NapredneBaze\BurgerHouse(Redis)\backend\bin\Debug\net8.0\System.Text.Json.dll

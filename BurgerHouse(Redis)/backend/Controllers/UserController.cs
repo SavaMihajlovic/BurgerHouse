@@ -164,4 +164,32 @@ public class UserController : ControllerBase
 
     }
 
+    [HttpPut("AddMoney")]
+    public async Task<ActionResult> AddMoney([FromBody] PaypalPayment paypalPayment)
+    {
+        try
+        {
+            var db = _redis.GetDatabase();
+            if (paypalPayment.Ammount < 0)
+                return BadRequest("Ammount has to be greater than zero!");
+            if(!await db.KeyExistsAsync(paypalPayment.User))
+                return BadRequest("User does not exist");
+
+            RedisValue currentCurrency = await db.HashGetAsync(paypalPayment.User , "digitalcurrency");
+            double totalAmmount = Convert.ToDouble(currentCurrency);
+            totalAmmount+=paypalPayment.Ammount;
+
+            await db.HashSetAsync(paypalPayment.User , [
+                new HashEntry("digitalcurrency" , totalAmmount)
+            ]);
+
+            return Ok($"{paypalPayment.User} now has {totalAmmount} ammount of money on their account");
+
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
 }

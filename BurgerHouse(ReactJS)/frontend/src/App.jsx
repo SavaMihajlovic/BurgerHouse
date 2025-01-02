@@ -10,6 +10,9 @@ import { MyOrders } from "./pages/MyOrders";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import { HomeRadnik } from "./pages/HomeRadnik";
 import { OrdersView } from "./pages/OrdersView";
+import { PaymentSuccess } from "./pages/PaymentSuccess";
+import { PaymentFailure } from "./pages/PaymentFailure";
+import { MakePayment } from "./pages/MakePayment";
 
 
 const App = () => {
@@ -23,11 +26,14 @@ const App = () => {
             <Navbar setLoginDialogOpen={setLoginDialogOpen} />
               <Routes>
                 <Route path="/" element={<Home loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
+                <Route path="/payment-failure" element={<PaymentFailure />} />
 
                 <Route element={<PrivateRoutes role = 'user' />}>
                   <Route path="/kupac" element={<HomeKupac loginDialogOpen={loginDialogOpen} setLoginDialogOpen={setLoginDialogOpen}/>} />
                   <Route path="/kupac-order" element={<Order/>} />
                   <Route path="/kupac-my-orders" element={<MyOrders/>} />
+                  <Route path="/kupac-make-payment" element={<MakePayment/>} />
                 </Route>
                 <Route element={<PrivateRoutes role = 'worker' />}>  
                   <Route path="/radnik" element={<HomeRadnik/>} />

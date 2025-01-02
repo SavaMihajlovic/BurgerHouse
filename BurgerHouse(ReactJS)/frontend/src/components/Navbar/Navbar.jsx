@@ -6,10 +6,12 @@ import styles from './Navbar.module.css';
 import axios from 'axios';
 import { UserFetch } from '../UserFetch/UserFetch';
 import { HashLink } from 'react-router-hash-link';
+import { Box, Input, Button } from '@chakra-ui/react';
 
 const Navbar = ({ setLoginDialogOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [role, setRole] = useState('');
+  const [amount, setAmount] = useState('');
   const [userData, setUserData] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,6 +68,23 @@ const Navbar = ({ setLoginDialogOpen }) => {
     }
   }
 
+  const handlePayment = async () => {
+    try {
+      const response = await axios.post('http://localhost:5119/Paypal/MakePayment', {
+        user: userData?.username || 'unknown',
+        ammount: parseFloat(amount),
+      });
+      if (response.data && response.data.link) {
+        navigate(response.data.link);
+      } else {
+        alert('Nije moguće izvršiti uplatu.');
+      }
+    } catch (error) {
+      console.error('Greška pri uplati:', error);
+      alert('Došlo je do greške prilikom obrade uplate.');
+    }
+  };
+
   const getMenuItems = () => {
 
       switch (role) {
@@ -75,6 +94,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
                 <li><Link to="/kupac" onClick={handleMenuClick}>Početna</Link></li>
                 <li><Link to="/kupac-order" onClick={handleMenuClick}>Naruči</Link></li>
                 <li><Link to="/kupac-my-orders" onClick={handleMenuClick}>Moje narudžbine</Link></li>
+                <li><Link to="/kupac-make-payment" onClick={handleMenuClick}>Uplati novac</Link></li>
                 <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
                 {menuOpen === false && (
                 <li className={styles.avatarContainer}>
@@ -87,7 +107,6 @@ const Navbar = ({ setLoginDialogOpen }) => {
                   <span className={styles.balance}>Balans: {userData?.digitalcurrency} RSD</span>
                 </li>
                 )}
-
               </>
           );  
 

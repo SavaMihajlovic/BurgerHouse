@@ -40,14 +40,15 @@ export const OrdersView = () => {
       );
 
       setOrderDetails(orders);
-      console.log(orderDetails);
     } catch (error) {
       console.error('Greška pri dobijanju narudžbina:', error);
     }
   };
 
   useEffect(() => {
-    fetchOrders();
+    setInterval(() => {
+      fetchOrders();
+    }, 10000); 
   }, []);
 
   const confirmOrder = async(key) => {
