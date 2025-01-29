@@ -23,6 +23,8 @@ export const Home = ({loginDialogOpen,setLoginDialogOpen}) => {
           navigate('/kupac');
         } else if (user.role === 'worker') {
           navigate('/radnik');
+        } else if (user.role === 'admin') {
+          navigate('/admin');
         } else {
           navigate('/');
         }

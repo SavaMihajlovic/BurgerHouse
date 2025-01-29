@@ -13,6 +13,8 @@ import { OrdersView } from "./pages/OrdersView";
 import { PaymentSuccess } from "./pages/PaymentSuccess";
 import { PaymentFailure } from "./pages/PaymentFailure";
 import { MakePayment } from "./pages/MakePayment";
+import { AdminMenuItem } from "./pages/AdminMenuItem";
+import { AdminOrder } from "./pages/AdminOrder";
 
 
 const App = () => {
@@ -38,6 +40,10 @@ const App = () => {
                 <Route element={<PrivateRoutes role = 'worker' />}>  
                   <Route path="/radnik" element={<HomeRadnik/>} />
                   <Route path="/radnik-orders-view" element={<OrdersView/>} />
+                </Route>
+                <Route element={<PrivateRoutes role = 'admin' />}>  
+                  <Route path="/admin" element={<AdminMenuItem/>} />
+                  <Route path="/admin-order" element={<AdminOrder/>} />
                 </Route>
 
               </Routes>

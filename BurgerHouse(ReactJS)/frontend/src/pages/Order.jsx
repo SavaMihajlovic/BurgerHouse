@@ -108,6 +108,7 @@ export const Order = () => {
   };
 
   const handlePayment = async () => {
+    console.log(orderList);
     if (user.digitalcurrency >= totalAmount) {
       const orderData = {
         userID: `user:${user.userEmail}`, 
@@ -117,7 +118,6 @@ export const Order = () => {
         })),
         createdAt: new Date().toISOString()  
       };
-
 
       try {
         const response = await axios.post('http://localhost:5119/Order/MakeOrder', orderData);

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import worker from '../img/worker.png'
 import Footer from '../components/Navbar/Footer/Footer';
 import { UserFetch } from '@/components/UserFetch/UserFetch';

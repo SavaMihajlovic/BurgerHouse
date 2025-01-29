@@ -27,6 +27,8 @@ const Navbar = ({ setLoginDialogOpen }) => {
           setRole('Kupac');
         } else if (user.role === "worker") {
           setRole('Radnik');
+        } else if (user.role === "admin") {
+          setRole('Admin');
         } else {
           setRole('');
         }
@@ -116,6 +118,25 @@ const Navbar = ({ setLoginDialogOpen }) => {
                 <li><Link to="/radnik" onClick={handleMenuClick}>Početna</Link></li>
                 <li><Link to="/radnik-orders-view" onClick={handleMenuClick}>Pregled narudžbina</Link></li>
                 <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
+              </>
+              );
+        case 'Admin':
+          return (
+              <>
+                <li><Link to="/admin" onClick={handleMenuClick}>MenuItem</Link></li>
+                <li><Link to="/admin-order" onClick={handleMenuClick}>Order</Link></li>
+                <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
+                {menuOpen === false && (
+                <li className={styles.avatarContainer}>
+                  <Avatar
+                    className={styles['avatar-padding']}
+                    size="sm"
+                    variant="subtle"
+                    name={`${userData?.firstname || ''} ${userData?.lastname || ''}`}
+                  />
+                   <span className={styles.userData}><strong>{userData.firstname} {userData.lastname}</strong></span>
+                </li>
+                )}
               </>
               );
 

@@ -3,7 +3,6 @@ import { Input, Button, Stack, Box, Text, Link, HStack} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Radio, RadioGroup } from "@/components/ui/radio"
-import { use } from 'react';
 import { UserFetch } from '../UserFetch/UserFetch';
 
 const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
@@ -42,6 +41,8 @@ const LoginForm = ({ loginDialogOpen, setLoginDialogOpen }) => {
             navigate('/kupac');
           } else if (user.role === "worker") {
             navigate('/radnik');
+          } else if (user.role === "admin") {
+            navigate('/admin');
           } else {
             navigate('/');
           }
