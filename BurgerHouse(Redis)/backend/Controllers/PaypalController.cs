@@ -10,6 +10,7 @@ public class PaypalController : ControllerBase
     private readonly IConfiguration _configuration;
 
     private readonly HttpClient _httpClient;
+    private readonly string _paymentKey = "paymentKey";
 
     public PaypalController(IConnectionMultiplexer redis , IConfiguration configuration )
     {
@@ -69,6 +70,13 @@ public class PaypalController : ControllerBase
             {
                 var result = response.Result<PayPalCheckoutSdk.Orders.Order>();
                 var approvalUrl = result.Links.First(link => link.Rel == "approve").Href;
+                var globalPaymentKey = await db.StringIncrementAsync(_paymentKey);
+                string redisKey = $"payment:{paypalPayment.User}:{globalPaymentKey}";
+                await db.HashSetAsync(redisKey,[
+                    new HashEntry("ammount" , paypalPayment.Ammount),
+                    new HashEntry("date" , DateTime.Now.ToString())
+                ]);
+                await db.KeyExpireAsync(redisKey , TimeSpan.FromDays(30));
                 return Ok(approvalUrl);
             }
             else
@@ -112,6 +120,40 @@ public class PaypalController : ControllerBase
             return BadRequest($"Payment is not succesful! Error:{ex.Message}");
         }
     }
+   [HttpGet("GetAllUserPayments/{userKey}")]
+public async Task<ActionResult> GetAllUserPayments(string userKey)
+{
+    try
+    {
+        var db = _redis.GetDatabase();
+        var server = _redis.GetServer(_redis.GetEndPoints().First());
+        var pattern = $"payment:{userKey}:*";
+        var keys = new List<String>();
+
+        var redisKeys = db.Multiplexer.GetServer(_redis.GetEndPoints().First()).Keys(pattern: pattern);
+        foreach (var key in redisKeys)
+        keys.Add(key.ToString());
+            
+            
+         
+        var allPayments = new Dictionary<string , Dictionary<string , string>>();
+        foreach (var key in keys)
+        {
+            HashEntry[] fields = await db.HashGetAllAsync(key);
+            var fieldList = fields.ToDictionary(
+            field => field.Name.ToString(),
+            field => field.Value.ToString()
+            );
+            allPayments.Add(key , fieldList);
+        }
+        
+        return Ok(allPayments);
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
 
 
     private async Task<string> GetAccessToken()

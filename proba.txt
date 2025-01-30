@@ -1,4 +1,0 @@
-KEY * - prikazuje sve kljuceve u redis
-get users:1 - vrednost za kljuc users:1
-
-PREZENTACIJE RG - od crtanje primitiva i 2 posle toga nauciti

@@ -9,10 +9,22 @@ public class MenuItemController : ControllerBase
         _redis = redis;
     }
     [HttpPost("AddItem/{type}")]
-    public async Task<ActionResult> AddItem([FromBody] MenuItem menuItem , string type)
+    public async Task<ActionResult> AddItem([FromForm] MenuItem menuItem , string type , IFormFile image)
     {
         try
         {
+            if(image == null || image.Length == 0)
+            {
+                return BadRequest("Image not found");
+            }
+            byte[] fileBytes;
+            using (var stream = image.OpenReadStream())
+            {
+                fileBytes = new byte[image.Length];
+                await stream.ReadAsync(fileBytes, 0, (int)image.Length);
+            }
+            string base64Image = Convert.ToBase64String(fileBytes);
+
             if (type != "burger" && type != "fries" && type != "drinks")
                 return BadRequest("Type must be burger|fries|drinks");
             if(string.IsNullOrEmpty(menuItem.Name))
@@ -25,11 +37,13 @@ public class MenuItemController : ControllerBase
             string redisKey = $"menu:{type}:{menuItem.Name.ToLower().Replace(" " , "")}";
             if(await db.KeyExistsAsync(redisKey))
                 return BadRequest($"Item with name:{menuItem.Name} already exists.");
+            var contentType = "image/jpeg";
             await db.HashSetAsync(redisKey , 
             [
                 new HashEntry("name", menuItem.Name),
                 new HashEntry("price",menuItem.Price),
-                new HashEntry("description", menuItem.Description)
+                new HashEntry("description", menuItem.Description),
+                new HashEntry("image" , $"data:{contentType};base64,{base64Image}"),
             ]);
             await db.SetAddAsync("menu:items" , redisKey);
             return Ok($"Item is succesfully added to menu , redisKey={redisKey}.");
@@ -79,14 +93,7 @@ public class MenuItemController : ControllerBase
                 field => field.Name.ToString(),
                 field => field.Value.ToString()
             );
-            key = key.Replace(":" , "_");
-            var imagePath = Path.Combine("Images" , $"{key}.jpg");
-            if (System.IO.File.Exists(imagePath)){
-                var imageBytes = System.IO.File.ReadAllBytes(imagePath);
-                var base64Image = Convert.ToBase64String(imageBytes);
-                var contentType = "image/jpeg";
-                fieldList.Add("image" , $"data:{contentType};base64,{base64Image}");
-            }
+            
             return Ok(fieldList);
         }
         catch (Exception ex)
@@ -137,10 +144,22 @@ public class MenuItemController : ControllerBase
 
 
     [HttpPut("UpdateItem/{key}")]
-    public async Task<ActionResult> UpdateItem([FromBody] MenuItem menuItem , string key)
+    public async Task<ActionResult> UpdateItem([FromForm] MenuItem menuItem , string key , IFormFile image)
     {
         try
         {
+            if(image == null || image.Length == 0)
+            {
+                return BadRequest("Image not found");
+            }
+            byte[] fileBytes;
+            using (var stream = image.OpenReadStream())
+            {
+                fileBytes = new byte[image.Length];
+                await stream.ReadAsync(fileBytes, 0, (int)image.Length);
+            }
+            string base64Image = Convert.ToBase64String(fileBytes);
+
             if(string.IsNullOrEmpty(menuItem.Name))
                 return BadRequest("Item has to have a name.");
             if(string.IsNullOrEmpty(menuItem.Description))
@@ -151,13 +170,49 @@ public class MenuItemController : ControllerBase
             var redisKey = key;
             if(!await db.KeyExistsAsync(redisKey))
                 return NotFound("Items do not exist.");
+            var contentType = "image/jpeg";
             await db.HashSetAsync(redisKey , [
                 new HashEntry("price" , menuItem.Price),
-                new HashEntry("description" , menuItem.Description)
+                new HashEntry("description" , menuItem.Description),
+                new HashEntry("image" , $"data:{contentType};base64,{base64Image}")
             ]);
             return Ok($"Item is updated redisKey={redisKey}.");
         }
         catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPut("UpdateItemImage/{key}")]
+    public async Task<ActionResult> UpdateItemImage(string key ,IFormFile image)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(key))
+                return BadRequest("No item key");
+            if(image == null || image.Length == 0)
+            {
+                return BadRequest("Image not found");
+            }
+            byte[] fileBytes;
+            using (var stream = image.OpenReadStream())
+            {
+                fileBytes = new byte[image.Length];
+                await stream.ReadAsync(fileBytes, 0, (int)image.Length);
+            }
+            string base64Image = Convert.ToBase64String(fileBytes);
+             var db = _redis.GetDatabase();
+            var redisKey = key;
+            if(!await db.KeyExistsAsync(redisKey))
+                return NotFound("Items do not exist.");
+            var contentType = "image/jpeg";
+            await db.HashSetAsync(redisKey , [
+                new HashEntry("image" , $"data:{contentType};base64,{base64Image}")
+            ]);
+            return Ok($"Item is updated redisKey={redisKey}.");
+           
+        }
+        catch(Exception ex)
         {
             return BadRequest(ex.Message);
         }

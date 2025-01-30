@@ -6,4 +6,6 @@ public class MenuItem
     public required double Price { get; set; }
     [MaxLength(80)]
     public required string Description { get; set; }
+    [MaxLength(5000)]
+    public string? Image {get; set;}
 }
