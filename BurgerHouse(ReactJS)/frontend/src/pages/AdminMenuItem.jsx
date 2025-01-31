@@ -17,15 +17,28 @@ export const AdminMenuItem = () => {
   const [menuItem, setMenuItem] = useState(null);
   const [menuItemsSpecific, setMenuItemsSpecific] = useState([]);
   const [menuItemsAll, setMenuItemsAll] = useState([]);
-  const [awardsValue, setAwardsValue] = useState('');
-  const [actors, setActors] = useState([]);
+  const [image, setImage] = useState(null);
+
+  const handleFileChange = (event) => {
+    const { value, files } = event.target;
+    setImage(files ? files[0] : value);
+  }
 
   const handleAddMenuItem = async () => {
     try {
-      const response = await axios.post(`http://localhost:5119/MenuItem/AddItem/${selectedType}`, {
-        name,
-        price,
-        description
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('price', parseFloat(price));
+      formData.append('description', description);
+      
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await axios.post(`http://localhost:5119/MenuItem/AddItem/${selectedType}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       if (response.status === 200) {
@@ -38,10 +51,19 @@ export const AdminMenuItem = () => {
 
   const handleUpdateMenuItem = async () => {
     try {
-      const response = await axios.put(`http://localhost:5119/MenuItem/UpdateItem/${menuItemKey}`, {
-        name,
-        price,
-        description
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('price', parseFloat(price));
+      formData.append('description', description);
+      
+      if (image) {
+        formData.append('image', image);
+      }
+      const response = await axios.put(`http://localhost:5119/MenuItem/UpdateItem/${menuItemKey}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       if (response.status === 200) {
@@ -133,6 +155,18 @@ export const AdminMenuItem = () => {
                   color='white'
                   p={3}
                   bg='#2a2629'
+                />
+              </HStack>
+              <HStack width="100%" spacing={4}>
+                <Text width="150px">Slika :</Text>
+                <Input 
+                  type="file" 
+                  id="dodatni-input" 
+                  accept=".jpg" 
+                  width='25%'
+                  bg='#2a2629'
+                  name="dodatniInput" 
+                  onChange={handleFileChange}
                 />
               </HStack>
               <HStack>
@@ -268,6 +302,7 @@ export const AdminMenuItem = () => {
                   color='white'
                   p={3}
                   bg='#2a2629'
+                  placeholder='menu:type:name'
                 />
               </HStack>
               <HStack width="100%" spacing={4}>
@@ -304,6 +339,18 @@ export const AdminMenuItem = () => {
                 />
               </HStack>
               <HStack width="100%" spacing={4}>
+                <Text width="150px">Slika :</Text>
+                <Input 
+                  type="file" 
+                  id="dodatni-input" 
+                  accept=".jpg" 
+                  width='25%'
+                  bg='#2a2629'
+                  name="dodatniInput" 
+                  onChange={handleFileChange}
+                />
+              </HStack>
+              <HStack width="100%" spacing={4}>
                 <Button
                   padding={3}
                   backgroundColor='#007bff'
@@ -334,6 +381,7 @@ export const AdminMenuItem = () => {
                         color='white'
                         p={3}
                         bg='#2a2629'
+                        placeholder='menu:type:name'
                     />
                 </HStack>
                 <HStack width="100%" spacing={4}>

@@ -15,6 +15,7 @@ import { PaymentFailure } from "./pages/PaymentFailure";
 import { MakePayment } from "./pages/MakePayment";
 import { AdminMenuItem } from "./pages/AdminMenuItem";
 import { AdminOrder } from "./pages/AdminOrder";
+import { PaymentHistory } from "./pages/PaymentHistory";
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
                   <Route path="/kupac-order" element={<Order/>} />
                   <Route path="/kupac-my-orders" element={<MyOrders/>} />
                   <Route path="/kupac-make-payment" element={<MakePayment/>} />
+                  <Route path="/kupac-payment-history" element={<PaymentHistory/>} />
                 </Route>
                 <Route element={<PrivateRoutes role = 'worker' />}>  
                   <Route path="/radnik" element={<HomeRadnik/>} />

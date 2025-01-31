@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nemanja\\Desktop\\BurgerHouse\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj": {}
+    "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nemanja\\Desktop\\BurgerHouse\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj": {
+    "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nemanja\\Desktop\\BurgerHouse\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
+        "projectUniqueName": "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
         "projectName": "BurgerHouse",
-        "projectPath": "C:\\Users\\Nemanja\\Desktop\\BurgerHouse\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
-        "packagesPath": "C:\\Users\\Nemanja\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nemanja\\Desktop\\BurgerHouse\\BurgerHouse(Redis)\\backend\\obj\\",
+        "projectPath": "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\BurgerHouse.csproj",
+        "packagesPath": "C:\\Users\\msava\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\msava\\OneDrive\\Desktop\\IV GODINA\\SEMESTAR 7\\NAPREDNE BAZE PODATAKA\\NapredneBaze\\BurgerHouse(Redis)\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Nemanja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\msava\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,11 +34,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -93,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

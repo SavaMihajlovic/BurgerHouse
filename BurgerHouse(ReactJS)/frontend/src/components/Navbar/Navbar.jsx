@@ -97,6 +97,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
                 <li><Link to="/kupac-order" onClick={handleMenuClick}>Naruči</Link></li>
                 <li><Link to="/kupac-my-orders" onClick={handleMenuClick}>Moje narudžbine</Link></li>
                 <li><Link to="/kupac-make-payment" onClick={handleMenuClick}>Uplati novac</Link></li>
+                <li><Link to="/kupac-payment-history" onClick={handleMenuClick}>Plaćanja</Link></li>
                 <li><Link to="/" onClick={handleLogout}>Odjava</Link></li>
                 {menuOpen === false && (
                 <li className={styles.avatarContainer}>
@@ -106,7 +107,7 @@ const Navbar = ({ setLoginDialogOpen }) => {
                     variant="subtle"
                     name={`${userData?.firstname || ''} ${userData?.lastname || ''}`}
                   />
-                  <span className={styles.balance}>Balans: {userData?.digitalcurrency} RSD</span>
+                  <span className={styles.balance}>Balans: {userData?.digitalcurrency} EUR</span>
                 </li>
                 )}
               </>

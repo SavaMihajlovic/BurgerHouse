@@ -191,7 +191,7 @@ export const Order = () => {
                   </Card.Description>
                   <div style={{ marginTop: 'auto' }}>
                     <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight">
-                      {item.price || 'N/A'} RSD
+                      {item.price || 'N/A'} EUR
                     </Text>
                   </div>
                 </Card.Body>

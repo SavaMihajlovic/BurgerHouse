@@ -550,3 +550,8 @@ section {
   cursor: pointer;
   border-radius: 15px; 
 }
+
+.table {
+  margin-top: 50px;
+  margin-left: 50px;
+}
